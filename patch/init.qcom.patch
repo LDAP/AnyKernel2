@@ -1,0 +1,8 @@
+service post_boot_script /system/bin/sh /sbin/post_boot_script.sh
+    class late_start
+    user root
+    disabled
+    oneshot
+
+on property:sys.boot_completed=1
+    start post_boot_script
