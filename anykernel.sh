@@ -3,12 +3,13 @@
 
 ## AnyKernel setup
 # EDIFY properties
-kernel.string=CM+ Kernel by LDAP98 @ xda-developers
+kernel.string=LOS+ Kernel by LDAP98 @ xda-developers
 do.devicecheck=0
 do.initd=0
 do.modules=0
+do.disable=1
 do.cleanup=1
-device.name1=titan
+device.name1=
 device.name2=
 device.name3=
 device.name4=
@@ -39,29 +40,11 @@ dump_boot;
 ui_print " "; ui_print "Tweaking ramdisk...";
 
 # init.qcom.rc
-backup_file init.qcom.rc;
+# backup_file init.qcom.rc;
 replace_line init.qcom.rc "    start mpdecision" "    stop mpdecision";
 append_file init.qcom.rc "post_boot_script" init.qcom.patch;
 
-
-# add frandom compatibility
-backup_file ueventd.rc;
-insert_line ueventd.rc "frandom" after "urandom" "/dev/frandom              0666   root       root\n";
-insert_line ueventd.rc "erandom" after "urandom" "/dev/erandom              0666   root       root\n";
-
-backup_file file_contexts;
-insert_line file_contexts "frandom" after "urandom" "/dev/frandom				u:object_r:frandom_device:s0\n";
-insert_line file_contexts "erandom" after "urandom" "/dev/erandom				u:object_r:erandom_device:s0\n";
-
-# xPrivacy
-# Thanks to @Shadowghoster & @@laufersteppenwolf
-param=$(grep "xprivacy" service_contexts)
-if [ -z $param ]; then
-    echo -ne "xprivacy453                               u:object_r:system_server_service:s0\n" >> service_contexts
-fi
-
 # Selinux
-mount -o remount,ro /system;
 
 cmdtmp=`cat $split_img/*-cmdline`;
 case "$cmdtmp" in

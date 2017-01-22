@@ -17,7 +17,7 @@ echo "1" > /sys/kernel/sched/arch_power
 # Hotplugging & Govs
 stop mpdecision
 echo 1 > /sys/module/autosmp/parameters/enabled
-
+echo 0 > /sys/devices/system/cpu/cpuquiet/cpuquiet_driver/enabled
 
 # Power Suspend
 echo "3" > /sys/kernel/power_suspend/power_suspend_mode
